@@ -1,15 +1,14 @@
 package br.com.fiap.rm98825.navigation
 
-
-
 import androidx.compose.runtime.Composable
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import br.com.fiap.rm98825.data.ScanRepository
 import br.com.fiap.rm98825.screens.DetailScreen
 import br.com.fiap.rm98825.screens.HomeScreen
 import br.com.fiap.rm98825.screens.IntroScreen
 import br.com.fiap.rm98825.screens.SplashScreen
-
 
 @Composable
 fun AppNavigation() {
@@ -34,19 +33,26 @@ fun AppNavigation() {
 
         composable(Routes.Intro.route) {
 
-            IntroScreen {
-                navController.navigate(Routes.Home.route)
-            }
+            IntroScreen(
+                onNext = {
+                    navController.navigate(Routes.Home.route)
+                }
+            )
         }
 
         composable(Routes.Home.route) {
 
             HomeScreen(
                 scans = ScanRepository.scans,
+
                 onScanClick = { id ->
                     navController.navigate(
                         Routes.Detail.createRoute(id)
                     )
+                },
+
+                onBackToIntro = {
+                    navController.navigate(Routes.Intro.route)
                 }
             )
         }
